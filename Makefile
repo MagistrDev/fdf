@@ -4,7 +4,7 @@ all: hello
 #hello: gcc -Wall -Wextra -Werror -lmlx -lXext -lX11 -L minilibx/ -I minilibx/ main.c -o fdf
 
 hello: main.c 
-		 clang main.c  -Wall -Wextra -Werror -lmlx -lXext -lm -lX11 -L minilibx/ -I minilibx/ -o fdf
+		 clang main.c control.c -Wall -Wextra -Werror -lmlx -lXext -lm -lX11 -L minilibx/ -I minilibx/ -o fdf
 clean:
 	@/bin/rm -f *.o
 
