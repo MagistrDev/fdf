@@ -6,19 +6,20 @@
 /*   By: ecelsa <ecelsa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/30 05:51:43 by ecelsa            #+#    #+#             */
-/*   Updated: 2019/12/11 00:38:26 by ecelsa           ###   ########.fr       */
+/*   Updated: 2019/12/11 02:19:16 by ecelsa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 int g_rx = 1;
 int g_ry = 1;
-int g_rz = 3;
+int g_rz = 0;
 int elem = 9;
 t_ptr g_fig[100];
 
 void print_os(t_window *window);
 void set_teble(t_window *win);
+
 
 void	ft_bzero(void *s, size_t n)
 {
@@ -34,6 +35,21 @@ void ft_putchar(char c)
 	write(1, &c, 1);
 }
 
+void put_rgba(int c1, int c2)
+{
+	float alph;
+	//int 	x;
+	if (!(c2>>24) || (c2>>24) == 0xff)
+		c1 = c2;
+	else
+	{
+		alph = 0xff / (c2>>24);	
+		//(c2 >> 16)
+		
+	}
+	
+	
+}
 void ft_putline(t_ptr pt1, t_ptr pt2, int col, t_window *win)
 {
 	
@@ -154,6 +170,8 @@ int main(int argc, char **argv)
 	window.img_height = 100;
 	window.img_pos_x = -50;
 	window.img_pos_y = -50;
+	window.y_c = window.img_height / 2;
+	window.x_c = window.img_width / 2;
 	//char	*title = "ffff";
 
 	input_pt(&g_fig[0],-20, 20, -20);
@@ -164,7 +182,7 @@ int main(int argc, char **argv)
 	input_pt(&g_fig[5], 20, 20, 20);
 	input_pt(&g_fig[6], 20, -20, 20);
 	input_pt(&g_fig[7],-20, -20, 20);
-	
+	/*0,0,20 -20,0,0 0,0,-20 */
 	window.img_pos_x = 250;
 	window.img_pos_y = 250;
 	(void)argc;

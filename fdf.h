@@ -6,7 +6,7 @@
 /*   By: ecelsa <ecelsa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 20:04:32 by ecelsa            #+#    #+#             */
-/*   Updated: 2019/12/10 11:50:35 by ecelsa           ###   ########.fr       */
+/*   Updated: 2019/12/11 01:39:48 by ecelsa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ typedef struct	s_window
 	int img_height;
 	int img_pos_x;
 	int img_pos_y;
+	int y_c;
+	int x_c;
 	t_mevnt	mouse;
 } 				t_window;
 
