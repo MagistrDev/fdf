@@ -6,21 +6,31 @@
 /*   By: ecelsa <ecelsa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 20:04:32 by ecelsa            #+#    #+#             */
-/*   Updated: 2019/12/11 01:39:48 by ecelsa           ###   ########.fr       */
+/*   Updated: 2020/01/26 04:51:21 by ecelsa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# define ESC 65307
-# define SPACE 32
+// # define ESC 65307
+// # define SPACE 32
+// # define UP 65362
+// # define DOWN 65364
+// # define LEFT 65361
+// # define RIGHT 65363
+// # define ENTER 65293
+// # define TAB 65289
+
+# define ESC 53
+# define SPACE 49
 # define UP 65362
 # define DOWN 65364
 # define LEFT 65361
 # define RIGHT 65363
 # define ENTER 65293
 # define TAB 65289
+
 # define ABS(v) ((v) >= 0) ? v : -(v)
 
 # include "minilibx/mlx.h"
@@ -29,6 +39,7 @@
 # include <math.h>
 # include <stdio.h>
 # include <string.h>
+# include "libft.h"
 
 typedef struct	s_ptr
 {

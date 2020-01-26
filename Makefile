@@ -4,7 +4,7 @@ all: hello
 #hello: gcc -Wall -Wextra -Werror -lmlx -lXext -lX11 -L minilibx/ -I minilibx/ main.c -o fdf
 
 hello: main.c 
-		 clang main.c control.c -Wall -Wextra -Werror -lmlx -lXext -lm -lX11 -L minilibx/ -I minilibx/ -o fdf
+		 clang -Wall -Wextra -Werror -I./libft -L./libft -lft -L/usr/local/lib/ -I/usr/local/include -lmlx -framework OpenGL -framework AppKit -lm -o fdf main.c control.c 
 clean:
 	@/bin/rm -f *.o
 

@@ -6,7 +6,7 @@
 /*   By: ecelsa <ecelsa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 20:09:09 by ecelsa            #+#    #+#             */
-/*   Updated: 2019/12/09 21:40:20 by ecelsa           ###   ########.fr       */
+/*   Updated: 2020/01/26 04:50:33 by ecelsa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int key_press(int key, t_window *param)
 	win = *param;
 	ft_putchar(key);
 	mlx_pixel_put(win.mlx_ptr, win.win_ptr, key, key, 0xffffff);
-	printf("%d ", key);
+	ft_putnbr(key);
+	ft_putstr(" ");
 	if (key == RIGHT)
 	{
 		if (win.img_pos_x < (win.size_x - win.img_width))

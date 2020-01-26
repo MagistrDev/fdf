@@ -6,7 +6,7 @@
 /*   By: ecelsa <ecelsa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/30 05:51:43 by ecelsa            #+#    #+#             */
-/*   Updated: 2019/12/11 02:19:16 by ecelsa           ###   ########.fr       */
+/*   Updated: 2020/01/26 09:27:12 by ecelsa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,11 +174,11 @@ int main(int argc, char **argv)
 	window.x_c = window.img_width / 2;
 	//char	*title = "ffff";
 
-	input_pt(&g_fig[0],-20, 20, -20);
-	input_pt(&g_fig[1],20, 20, -20);
-	input_pt(&g_fig[2],20, -20, -20);
-	input_pt(&g_fig[3],-20, -20, -20);
-	input_pt(&g_fig[4],-20, 20, 20);
+	input_pt(&g_fig[0],1, 1, 1);
+	input_pt(&g_fig[1],2, 1, 1);
+	input_pt(&g_fig[2],2, 2, 1);
+	input_pt(&g_fig[3],1, 2, 1);
+	input_pt(&g_fig[4],1, 1, 2);
 	input_pt(&g_fig[5], 20, 20, 20);
 	input_pt(&g_fig[6], 20, -20, 20);
 	input_pt(&g_fig[7],-20, -20, 20);
