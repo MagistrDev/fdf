@@ -6,7 +6,7 @@
 /*   By: ecelsa <ecelsa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/27 23:18:02 by ecelsa            #+#    #+#             */
-/*   Updated: 2020/01/28 13:53:49 by ecelsa           ###   ########.fr       */
+/*   Updated: 2020/01/28 17:01:52 by ecelsa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 
 #define ESC 53
 #define SPACE 49
+#define PLUS 69
+#define MINUS 78
+
 
 typedef struct	s_ptr
 {
@@ -28,6 +31,7 @@ typedef struct	s_ptr
 	double			x_o;
 	double			y_o;
 	double			z_o;
+	int				color;
 	struct	s_ptr	*next;
 } 				t_ptr;
 
@@ -43,6 +47,7 @@ typedef struct	s_mevnt
 
 typedef struct	s_window
 {
+	t_ptr	*ptr;
 	void *mlx_ptr;
 	void *win_ptr;
 	void *imp_ptr;
@@ -58,6 +63,8 @@ typedef struct	s_window
 	int img_pos_y;
 	int y_c;
 	int x_c;
+	int zoom;
+	int z;
 	t_mevnt	mouse;
 } 				t_window;
 
@@ -145,34 +152,8 @@ void	rot_ptr(t_ptr *ptr, double x, double y, double z)
 	}
 }
 
-int		key_press(int key, t_window *param)
-{
-	(void)param;
-	ft_putnbr(key);
-	ft_putstr(" ");
-	if (key == ESC)
-		exit(0);
-	if (key == SPACE)
-	{
-		
-	}
-	return (0);
-}
 
-void	put_img(t_window *win, t_ptr *ptr)
-{
-	t_ptr *pt;
-
-	pt = ptr;
-
-	while (pt)
-	{
-		
-		pt = pt->next;
-	}
-}
-
-void ft_putline(t_ptr *pt1, t_ptr *pt2, int col, t_window *win)
+void	ft_putline(t_ptr *pt1, t_ptr *pt2, int col, t_window *win)
 {
 	
 	float dx;
@@ -186,24 +167,77 @@ void ft_putline(t_ptr *pt1, t_ptr *pt2, int col, t_window *win)
 	int y_c = win->img_height / 2;
 	int x_c = win->img_width / 2;
 	
-	xst = pt1->x_o*15;
-	yst = pt1->y_o*15;
-	xend = pt2->x_o*15;
-	yend = pt2->y_o*15;
-	printf("%f %f\n",fabs(yend - yst),fabs(xend - xst));
+	xst = pt1->x_o * win->zoom;
+	yst = pt1->y_o * win->zoom;
+	xend = pt2->x_o * win->zoom;
+	yend = pt2->y_o * win->zoom;
+	//printf("%f %f\n",fabs(yend - yst),fabs(xend - xst));
 	double a = fabs(xend - xst), b = fabs(yend - yst);
 	l = round((a > b) ? a : b);
 
-	dx = (pt2->x_o*15 - pt1->x_o*15) / l;
- 	dy = (pt2->y_o*15 - pt1->y_o*15) / l;
+	dx = (pt2->x_o * win->zoom - pt1->x_o * win->zoom) / l;
+ 	dy = (pt2->y_o * win->zoom - pt1->y_o * win->zoom) / l;
  	i = 1;
  	while (i < l)
  	{
 		xst = xst + dx;
 		yst = yst + dy;
-		win->img[(int)(win->img_width * (round(yst) + y_c) + round(xst) + x_c)] = col;
+		if (((xst + x_c) > 0) && ((xst + x_c)< win->img_width) && ((yst +y_c) < win->img_height) && ((yst +y_c) > 0))
+			win->img[(int)(win->img_width * (round(yst) + y_c) + round(xst) + x_c)] = col;
 		i++;
  	}	 
+}
+
+void	put_img(t_window *win, t_ptr *ptr)
+{
+	t_ptr	*pt;
+	t_ptr	*pt2;
+	int		pixel;
+	
+	pt = ptr;
+	while (pt)
+	{		
+		if (((round(pt->y_o * win->zoom) + win->y_c) > 0) 
+			&& ((round(pt->y_o * win->zoom) + win->y_c) < win->img_height) && 
+			((round(pt->x_o * win->zoom) + win->x_c) < win->img_width) &&
+			((round(pt->x_o * win->zoom) + win->x_c) > 0))
+		{
+			pixel = (int)(win->img_width * (round(pt->y_o * win->zoom) + win->y_c ) + round(pt->x_o * win->zoom) + win->x_c);
+			win->img[pixel] = (pt->z) ? 0xff0000 : 0xff00;
+		}
+		pt2 = pt->next;
+		if (pt2 && (pt2->x - 1 == pt->x))
+			ft_putline(pt, pt2, 0xf0000f, win);
+		while (pt2)
+		{
+			if ((pt2->y == (pt->y + 1)) && (pt2->x == pt->x))
+				ft_putline(pt, pt2, 0xf0000f, win);
+			pt2 = pt2->next;
+		}
+		pt = pt->next;
+	}
+
+}
+
+int		key_press(int key, t_window *param)
+{
+	t_window win;
+
+	win = *param;
+	ft_putnbr(key);
+	ft_putstr(" ");
+	if (key == ESC)
+		exit(0);
+	if (key == PLUS)
+	{
+		//param->zoom++;
+		mlx_clear_window(param->mlx_ptr, param->win_ptr);
+		//rot_ptr(param->ptr, 0, 0, 0);
+		ft_bzero((char*)param->img, param->img_height * param->img_width * 4);
+		put_img(param, param->ptr);
+		mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, win.imp_ptr, win.img_pos_x, win.img_pos_y);
+	}
+	return (0);
 }
 
 int		main(int argc, char **argv)
@@ -211,11 +245,11 @@ int		main(int argc, char **argv)
 	int		fd;
 	char	*buf;
 	char	**split_ln;
-	t_ptr	*ptr;
 	int		ln;
+	t_window window;
 
 	ln = 0;
-	ptr = creat_pt();
+	window.ptr = creat_pt();
 	if (argc == 2)
 	{
 		if ((fd = open(argv[1], O_RDONLY)))
@@ -223,20 +257,21 @@ int		main(int argc, char **argv)
 			while(get_next_line(fd, &buf))
 			{
 				printf("%s\n", buf);
-				fil_ptr(ptr, buf, ln);
+				fil_ptr(window.ptr, buf, ln);
 				ln++;
 			}
 			free(buf);
 			close(fd);
 		}
 	}
-	t_window window;
 
-	window.size_x = 800;
-	window.size_y = 800;
+	window.size_x = 1500;
+	window.size_y = 1500;
 
-	window.img_width = 800;
-	window.img_height = 800;
+	window.zoom = 1;
+
+	window.img_width = 1500;
+	window.img_height = 1500;
 	window.img_pos_x = 0;
 	window.img_pos_y = 0;
 	window.y_c = window.img_height / 2;
@@ -249,36 +284,32 @@ int		main(int argc, char **argv)
 		window.img_height);
 	window.img = (int *)mlx_get_data_addr(window.imp_ptr, 
 		&window.img_bpp, &window.img_size_line, &window.img_endian);
-	rot_ptr(ptr, -30, -30, -30);
-		int *i;
-
-	i = window.img;
+	rot_ptr(window.ptr, 30, 30, 30);
+	
 	ft_bzero((char*)window.img, window.img_height * window.img_width * 4);
 	t_ptr	*pt;
 	t_ptr	*pt2;
 	int		pixel;
-	pt = ptr;
+	pt = window.ptr;
 	
 	while (pt)
-	{
-		pixel = (int)(window.img_width * (round(pt->y_o*15) + window.y_c) + round(pt->x_o*15) + window.x_c);
-		window.img[pixel] = (pt->z) ? 0xff0000 : 0xff00;
+	{		
+		if (((round(pt->y_o * window.zoom) + window.y_c) < window.img_height) && ((round(pt->x_o * window.zoom) + window.x_c) < window.img_width))
+		{
+			pixel = (int)(window.img_width * (round(pt->y_o * window.zoom) + window.y_c ) + round(pt->x_o * window.zoom) + window.x_c);
+			window.img[pixel] = (pt->z) ? 0xff0000 : 0xff00;
+		}
 		pt2 = pt->next;
-		if (pt2)
+		if (pt2 && (pt2->x - 1 == pt->x))
 			ft_putline(pt, pt2, 0xf0000f, &window);
+		while (pt2)
+		{
+			if ((pt2->y == (pt->y + 1)) && (pt2->x == pt->x))
+				ft_putline(pt, pt2, 0xf0000f, &window);
+			pt2 = pt2->next;
+		}
 		pt = pt->next;
-		
 	}
-	pt = ptr;	
-	// while (pt)
-	// {
-	// 	pt2 = pt->next;
-	// 	if (pt2)
-	// 		ft_putline(pt, pt2, 0xff, &window);
-	// 	pt = pt->next;
-		
-	// }
-	
 	mlx_put_image_to_window(window.mlx_ptr, window.win_ptr, window.imp_ptr, window.img_pos_x, window.img_pos_y);
 	//put_img(&window, ptr);
 	mlx_hook(window.win_ptr, 2, 1, key_press, &window);
@@ -287,7 +318,7 @@ int		main(int argc, char **argv)
 	// mlx_put_image_to_window(window.mlx_ptr, window.win_ptr, window.imp_ptr,
 		// window.img_pos_x, window.img_pos_y);
 	// setup_controls(&window);
-	free_ptr(ptr);
+	free_ptr(window.ptr);
 	mlx_loop(window.mlx_ptr);
 	return (0);
 }
