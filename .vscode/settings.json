@@ -1,0 +1,7 @@
+{
+	"files.associations": {
+		"fdf": "c",
+		"istream": "c",
+		"*.tcc": "c"
+	}
+}

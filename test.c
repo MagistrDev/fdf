@@ -6,7 +6,7 @@
 /*   By: ecelsa <ecelsa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/27 23:18:02 by ecelsa            #+#    #+#             */
-/*   Updated: 2020/01/28 17:01:52 by ecelsa           ###   ########.fr       */
+/*   Updated: 2020/01/29 08:25:45 by ecelsa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	fil_ptr(t_ptr *ptr, char *str, int line)
 	{
 		pt->x = x;
 		pt->y = line;
-		pt->z = ft_atoi(split_ln[x]);
+		pt->z = -1 * ft_atoi(split_ln[x]) * 0.1;
 		pt->next = creat_pt();
 		pt = pt->next;
 		x++;
@@ -197,14 +197,6 @@ void	put_img(t_window *win, t_ptr *ptr)
 	pt = ptr;
 	while (pt)
 	{		
-		if (((round(pt->y_o * win->zoom) + win->y_c) > 0) 
-			&& ((round(pt->y_o * win->zoom) + win->y_c) < win->img_height) && 
-			((round(pt->x_o * win->zoom) + win->x_c) < win->img_width) &&
-			((round(pt->x_o * win->zoom) + win->x_c) > 0))
-		{
-			pixel = (int)(win->img_width * (round(pt->y_o * win->zoom) + win->y_c ) + round(pt->x_o * win->zoom) + win->x_c);
-			win->img[pixel] = (pt->z) ? 0xff0000 : 0xff00;
-		}
 		pt2 = pt->next;
 		if (pt2 && (pt2->x - 1 == pt->x))
 			ft_putline(pt, pt2, 0xf0000f, win);
@@ -213,6 +205,14 @@ void	put_img(t_window *win, t_ptr *ptr)
 			if ((pt2->y == (pt->y + 1)) && (pt2->x == pt->x))
 				ft_putline(pt, pt2, 0xf0000f, win);
 			pt2 = pt2->next;
+		}
+		if (((round(pt->y_o * win->zoom) + win->y_c) > 0) 
+			&& ((round(pt->y_o * win->zoom) + win->y_c) < win->img_height) && 
+			((round(pt->x_o * win->zoom) + win->x_c) < win->img_width) &&
+			((round(pt->x_o * win->zoom) + win->x_c) > 0))
+		{
+			pixel = (int)(win->img_width * (round(pt->y_o * win->zoom) + win->y_c ) + round(pt->x_o * win->zoom) + win->x_c);
+			win->img[pixel] = (pt->z) ? 0xff0000 : 0xff00;
 		}
 		pt = pt->next;
 	}
@@ -230,9 +230,26 @@ int		key_press(int key, t_window *param)
 		exit(0);
 	if (key == PLUS)
 	{
-		//param->zoom++;
+		param->zoom++;
 		mlx_clear_window(param->mlx_ptr, param->win_ptr);
-		//rot_ptr(param->ptr, 0, 0, 0);
+		rot_ptr(param->ptr, 0, 0, 0);
+		ft_bzero((char*)param->img, param->img_height * param->img_width * 4);
+		put_img(param, param->ptr);
+		mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, win.imp_ptr, win.img_pos_x, win.img_pos_y);
+	}
+	if (key == MINUS)
+	{
+		param->zoom--;
+		mlx_clear_window(param->mlx_ptr, param->win_ptr);
+		rot_ptr(param->ptr, 0, 0, 0);
+		ft_bzero((char*)param->img, param->img_height * param->img_width * 4);
+		put_img(param, param->ptr);
+		mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, win.imp_ptr, win.img_pos_x, win.img_pos_y);
+	}
+	if (key == 83)
+	{
+		mlx_clear_window(param->mlx_ptr, param->win_ptr);
+		rot_ptr(param->ptr, 30, 30, 30);
 		ft_bzero((char*)param->img, param->img_height * param->img_width * 4);
 		put_img(param, param->ptr);
 		mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, win.imp_ptr, win.img_pos_x, win.img_pos_y);
@@ -318,7 +335,7 @@ int		main(int argc, char **argv)
 	// mlx_put_image_to_window(window.mlx_ptr, window.win_ptr, window.imp_ptr,
 		// window.img_pos_x, window.img_pos_y);
 	// setup_controls(&window);
-	free_ptr(window.ptr);
+	//free_ptr(window.ptr);
 	mlx_loop(window.mlx_ptr);
 	return (0);
 }
