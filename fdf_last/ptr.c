@@ -6,7 +6,7 @@
 /*   By: ecelsa <ecelsa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 08:48:39 by ecelsa            #+#    #+#             */
-/*   Updated: 2020/01/29 11:55:34 by ecelsa           ###   ########.fr       */
+/*   Updated: 2020/01/29 16:35:11 by ecelsa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	free_ptr(t_ptr *ptr)
 	t_ptr		*mem;
 
 	pt = ptr;
-	while (pt->next)
+	while (pt)
 	{
 		mem = pt->next;
 		free(pt);
@@ -54,7 +54,7 @@ void	fil_ptr(t_ptr *ptr, char *str, int line)
 	{
 		pt->x = x;
 		pt->y = line;
-		pt->z = -1 * ft_atoi(split_ln[x]) * 0.1;
+		pt->z = ft_atoi(split_ln[x]);
 		pt->next = creat_pt();
 		pt = pt->next;
 		x++;

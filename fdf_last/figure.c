@@ -6,7 +6,7 @@
 /*   By: ecelsa <ecelsa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 08:54:26 by ecelsa            #+#    #+#             */
-/*   Updated: 2020/01/29 08:59:53 by ecelsa           ###   ########.fr       */
+/*   Updated: 2020/01/29 14:31:47 by ecelsa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	fig_rotate(t_ptr *ptr, double rot_x, double rot_y, double rot_z)
 	z = -(ptr->x * sin(rot_y)) + ptr->z_o * cos(rot_y);
 	ptr->x_o = x;
 	ptr->z_o = z;
-	rot_z = (M_PI / 180 * rot_z);
+	rot_z = (M_PI / 180 * rot_z) * -1;
 	x = ptr->x_o * cos(rot_z) - ptr->y_o * sin(rot_z);
 	y = ptr->x_o * sin(rot_z) + ptr->y_o * cos(rot_z);
 	ptr->x_o = x;
