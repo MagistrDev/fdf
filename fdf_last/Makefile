@@ -16,21 +16,21 @@ MINILIBX = -L/usr/local/lib/ -I/usr/local/include -framework OpenGL -framework A
 
 all: $(NAME)
 
-$(NAME): obj libft.a $(SRCS)
-	$(CC) $(FLAGS) $(SRCS) $(LIB_DIR) $(INCLUDES) $(MINILIBX)  $(LIBS) -o $(NAME) -g
+$(NAME): $(SRCS:.c=.o) obj
+	make -C libft/
+	$(CC) $(FLAGS) $(SRCS:.c=.o) $(LIB_DIR) $(INCLUDES) $(MINILIBX)  $(LIBS) -o $(NAME)
 
+%.o : %.c
+	$(CC) -c $(FLAGS) $< $(INCLUDES) -o $@
 libft.a :
 	make -C libft/
 
-obj :
-	mkdir ./obj
-
 clean:
 	make -C libft clean
-	@/bin/rm -f *.o
+	/bin/rm -f $(SRCS:.c=.o)
 
 fclean: clean
 	make -C libft fclean
-	@/bin/rm -f $(NAME)
+	/bin/rm -f $(NAME)
 
 re: fclean all

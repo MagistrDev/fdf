@@ -6,7 +6,7 @@
 /*   By: ecelsa <ecelsa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/27 23:18:02 by ecelsa            #+#    #+#             */
-/*   Updated: 2020/01/29 17:44:43 by ecelsa           ###   ########.fr       */
+/*   Updated: 2020/01/29 19:36:27 by ecelsa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	fil_window(t_window *win)
 	win->size_x = 800;
 	win->size_y = 800;
 	win->zoom = 5;
+	win->z = 1;
 	win->img.width = 800;
 	win->img.height = 800;
 	win->img.pos_x = 0;
@@ -80,17 +81,22 @@ void	input_arg(int argc, char **argv, t_window *win)
 	win->ptr = creat_pt();
 	if (argc == 2)
 	{
-		if ((fd = open(argv[1], O_RDONLY)))
+		fd = open(argv[1], O_RDONLY);
+		if ((fd > 0) && (read(fd, win->help, 3) > 0))
 		{
+			close(fd);
+			fd = open(argv[1], O_RDONLY);
 			while (get_next_line(fd, &buf))
 			{
-				fil_ptr(win->ptr, buf, win->ln);
+				fil_ptr(win->ptr, buf, win->ln, win);
 				ft_strdel(&buf);
 				win->ln++;
 			}
 			ft_strdel(&buf);
 			close(fd);
 		}
+		else
+			exit(0);
 	}
 }
 

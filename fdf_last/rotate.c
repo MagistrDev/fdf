@@ -6,7 +6,7 @@
 /*   By: ecelsa <ecelsa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 17:05:21 by ecelsa            #+#    #+#             */
-/*   Updated: 2020/01/29 17:07:16 by ecelsa           ###   ########.fr       */
+/*   Updated: 2020/01/29 19:32:34 by ecelsa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,18 @@ void	vertat_os(t_window *win, int key)
 		win->r_z += 5;
 	if (key == 92)
 		win->r_z -= 5;
+	if (key == 116)
+	{
+		free_ptr(win->ptr);
+		win->z += 0.05;
+		input_arg(2, win->argv, win);
+	}
+	if (key == 121)
+	{
+		free_ptr(win->ptr);
+		win->z -= 0.05;
+		input_arg(2, win->argv, win);
+	}
 }
 
 int		key_press(int key, t_window *win)

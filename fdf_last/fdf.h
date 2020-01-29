@@ -6,7 +6,7 @@
 /*   By: ecelsa <ecelsa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 06:50:26 by ecelsa            #+#    #+#             */
-/*   Updated: 2020/01/29 17:43:43 by ecelsa           ###   ########.fr       */
+/*   Updated: 2020/01/29 18:54:28 by ecelsa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,14 @@ typedef struct	s_window
 	void	*mlx_ptr;
 	void	*win_ptr;
 	char	**argv;
+	char	help[10];
 	int		size_x;
 	int		size_y;
 	int		y_c;
 	int		x_c;
 	int		ln;
 	int		zoom;
-	int		z;
+	double	z;
 	int		r_x;
 	int		r_y;
 	int		r_z;
@@ -99,7 +100,7 @@ typedef struct	s_window
 
 t_ptr			*creat_pt();
 void			free_ptr(t_ptr *ptr);
-void			fil_ptr(t_ptr *ptr, char *str, int line);
+void			fil_ptr(t_ptr *ptr, char *str, int line, t_window *win);
 void			fig_rotate(t_ptr *ptr, double rotx, double roty, double rotz);
 void			rot_ptr(t_ptr *ptr, double x, double y, double z);
 int				cmp_1(t_ptr **pt, t_window *win);
